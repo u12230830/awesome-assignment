@@ -66,17 +66,17 @@ public class Invoice {
     public BigDecimal getSubTotal() {
         BigDecimal subTotal = BigDecimal.valueOf(0);
         for (LineItem lineItem : lineItems) {
-            subTotal.add(lineItem.getLineItemTotal());
+            subTotal = subTotal.add(lineItem.getLineItemTotal());
         }
 
         return subTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getVat() {
-        return getSubTotal().multiply(BigDecimal.valueOf(vatRate / 100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return getSubTotal().multiply(BigDecimal.valueOf(vatRate).divide(BigDecimal.valueOf(100))).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    public BigDecimal getTotal(){
-        return getSubTotal().add(getTotal()).setScale(2, BigDecimal.ROUND_HALF_UP);
+    public BigDecimal getTotal() {
+        return getSubTotal().add(getVat()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }

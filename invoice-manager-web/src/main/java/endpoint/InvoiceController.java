@@ -6,10 +6,10 @@ import endpoint.util.InvoiceManagerEndpointHelper;
 import model.Invoice;
 import model.LineItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import repo.InvoiceRepository;
 import repo.LineItemRespository;
@@ -32,13 +32,14 @@ public class InvoiceController {
      * @return
      */
     @RequestMapping(value = "/{invoiceId}", method = RequestMethod.GET)
-    public InvoiceDto viewInvoice(@RequestParam(value = "invoiceId") Long invoiceId) {
+    public InvoiceDto viewInvoice(@PathVariable(value = "invoiceId") Long invoiceId) {
         Invoice invoice = invoiceRepository.getOne(invoiceId);
         return InvoiceManagerEndpointHelper.buildInvoiceDtoFromInvoice(invoice);
     }
 
     /**
      * Returns a list of all stored invoices
+     *
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -49,6 +50,7 @@ public class InvoiceController {
 
     /**
      * Stores an invoice to the database
+     *
      * @param aAddInvoiceRequest
      * @return
      */
@@ -61,8 +63,8 @@ public class InvoiceController {
         return invoiceDto;
     }
 
-    private void saveItemItems(Invoice aInvoice){
-        for(LineItem lineItem : aInvoice.getLineItems()){
+    private void saveItemItems(Invoice aInvoice) {
+        for (LineItem lineItem : aInvoice.getLineItems()) {
             lineItem.setInvoice(aInvoice);
             lineItemRespository.save(lineItem);
         }

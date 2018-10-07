@@ -7,8 +7,9 @@ public class LineItemDto {
     private Long quantity;
     private String description;
     private BigDecimal unitPrice;
+    private BigDecimal lineItemTotal;
 
-    public LineItemDto(){
+    public LineItemDto() {
     }
 
     public LineItemDto(Long aQuantity, String aDescription, BigDecimal aUnitPrice) {
@@ -22,6 +23,7 @@ public class LineItemDto {
         quantity = aQuantity;
         description = aDescription;
         unitPrice = aUnitPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+        getLineItemTotal();
     }
 
     public Long getId() {
@@ -58,6 +60,7 @@ public class LineItemDto {
 
     public BigDecimal getLineItemTotal() {
         BigDecimal total = unitPrice.multiply(new BigDecimal(quantity));
-        return total.setScale(2, BigDecimal.ROUND_HALF_UP);
+        lineItemTotal = total.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return lineItemTotal;
     }
 }

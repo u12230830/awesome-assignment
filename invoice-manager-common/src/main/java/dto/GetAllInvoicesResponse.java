@@ -1,6 +1,5 @@
 package dto;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.List;
 public class GetAllInvoicesResponse {
     List<InvoiceDto> invoiceDtos;
 
-    public GetAllInvoicesResponse(){
+    public GetAllInvoicesResponse() {
         invoiceDtos = new ArrayList<InvoiceDto>();
     }
 
@@ -20,7 +19,7 @@ public class GetAllInvoicesResponse {
         invoiceDtos = aInvoiceDtos;
     }
 
-    public void addInvoice(Long id, Date invoiceDate, String clientName, Long vatRate){
+    public void addInvoice(Long id, Date invoiceDate, String clientName, Long vatRate) {
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setId(id);
         invoiceDto.setClientName(clientName);

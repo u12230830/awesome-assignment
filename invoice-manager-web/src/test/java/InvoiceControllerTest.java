@@ -1,6 +1,4 @@
-import dto.AddInvoiceRequest;
 import dto.InvoiceDto;
-import dto.LineItemDto;
 import endpoint.InvoiceController;
 import model.Invoice;
 import org.junit.Before;
@@ -16,13 +14,12 @@ import repo.InvoiceRepository;
 import testutils.InvoiceManagerTestUtility;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -55,20 +52,9 @@ public class InvoiceControllerTest {
         String jsonResponse = result.getResponse().getContentAsString();
         InvoiceDto invoiceDto = InvoiceManagerTestUtility.jsonStringToObject(jsonResponse, InvoiceDto.class);
         assertNotNull(invoiceDto);
+        verify(invoiceRepository, times(1)).getOne(anyLong());
+        assertEquals(BigDecimal.valueOf(105.50).setScale(2, BigDecimal.ROUND_HALF_UP), invoiceDto.getSubTotal());
+        assertEquals(BigDecimal.valueOf(14.77), invoiceDto.getVat());
+        assertEquals(BigDecimal.valueOf(120.27), invoiceDto.getTotal());
     }
-
-    /*@Test
-    public void skfjaesf() throws Exception {
-        AddInvoiceRequest addInvoiceRequest = new AddInvoiceRequest();
-        addInvoiceRequest.setClientName("Fako");
-        addInvoiceRequest.setInvoiceDate(new Date());
-        addInvoiceRequest.setVatRate(14L);
-        for(int i =0; i < 5; i++){
-            addInvoiceRequest.getLineItemDtos().add(new LineItemDto(1L, "Fako", new BigDecimal(14.5)));
-        }
-        //addInvoiceRequest.setLineItemDtos(Arrays.asList(new LineItemDto(1L, "Fako", new BigDecimal(14.5)), new LineItemDto(), new LineItemDto()));
-
-        String json = InvoiceManagerTestUtility.objectToJsonString(addInvoiceRequest);
-        System.out.println(json);
-    }*/
 }

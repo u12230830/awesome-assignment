@@ -19,7 +19,6 @@ public class InvoiceManagerEndpointHelper {
         return invoiceDtos;
     }
 
-
     public static InvoiceDto buildInvoiceDtoFromInvoice(Invoice aInvoice) {
         InvoiceDto invoiceDto = new InvoiceDto();
         invoiceDto.setId(aInvoice.getId());
@@ -28,7 +27,7 @@ public class InvoiceManagerEndpointHelper {
         invoiceDto.setVatRate(aInvoice.getVatRate());
         invoiceDto.setVat(aInvoice.getVat());
         invoiceDto.setSubTotal(aInvoice.getSubTotal());
-        invoiceDto.setTotal(aInvoice.getSubTotal());
+        invoiceDto.setTotal(aInvoice.getTotal());
 
         for (LineItem lineItem : aInvoice.getLineItems()) {
             invoiceDto.addLineItem(lineItem.getId(), lineItem.getQuantity(), lineItem.getDescription(), lineItem.getUnitPrice());
@@ -49,7 +48,7 @@ public class InvoiceManagerEndpointHelper {
     public static List<LineItem> buildLineItemsFromLineItemDtos(List<LineItemDto> aLineItemDtos) {
         List<LineItem> lineItems = new ArrayList<>();
 
-        for(LineItemDto lineItemDto : aLineItemDtos){
+        for (LineItemDto lineItemDto : aLineItemDtos) {
             LineItem lineItem = new LineItem();
             lineItem.setDescription(lineItemDto.getDescription());
             lineItem.setQuantity(lineItemDto.getQuantity());
