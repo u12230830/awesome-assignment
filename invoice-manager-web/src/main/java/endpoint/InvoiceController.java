@@ -2,6 +2,7 @@ package endpoint;
 
 import dto.AddInvoiceRequest;
 import dto.InvoiceDto;
+import endpoint.util.InvoiceManagerEndpointHelper;
 import model.Invoice;
 import model.LineItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,42 +21,39 @@ public class InvoiceController {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    /**
+     * Returns required invoice by Id
+     *
+     * @param invoiceId
+     * @return
+     */
     @RequestMapping("/{invoiceId}")
-    public AddInvoiceRequest getInvoice(@RequestParam(value = "invoiceId") String invoiceId) {
-        return new AddInvoiceRequest();
+    public InvoiceDto viewInvoice(@RequestParam(value = "invoiceId") Long invoiceId) {
+        Invoice invoice = invoiceRepository.getOne(invoiceId);
+        return InvoiceManagerEndpointHelper.buildInvoiceDtoFromInvoice(invoice);
     }
 
-    @RequestMapping("/")
-    public List<Invoice> getAllInvoices() {
-        return invoiceRepository.findAll();
+    /**
+     * Returns a list of all stored invoices
+     * @return
+     */
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public List<InvoiceDto> viewAllInvoices() {
+        List<Invoice> invoices = invoiceRepository.findAll();
+        return InvoiceManagerEndpointHelper.buildInvoiceDtosFromInvoiceList(invoices);
     }
 
-    @RequestMapping(value = "/{invoiceId}", method = RequestMethod.POST)
+    /**
+     * Stores an invoice to the database
+     * @param aAddInvoiceRequest
+     * @return
+     */
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public InvoiceDto addInvoice(@RequestBody AddInvoiceRequest aAddInvoiceRequest) {
-        Invoice invoice = buildInvoiceFromAddInvoiceRequest(aAddInvoiceRequest);
+        Invoice invoice = InvoiceManagerEndpointHelper.buildInvoiceFromAddInvoiceRequest(aAddInvoiceRequest);
         invoiceRepository.save(invoice);
-        InvoiceDto invoiceDto = buildInvoiceDtoFromInvoice(invoice);
+        InvoiceDto invoiceDto = InvoiceManagerEndpointHelper.buildInvoiceDtoFromInvoice(invoice);
         return invoiceDto;
     }
 
-    private InvoiceDto buildInvoiceDtoFromInvoice(Invoice aInvoice) {
-        InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setId(aInvoice.getId());
-        invoiceDto.setInvoiceDate(aInvoice.getInvoiceDate());
-        invoiceDto.setClientName(aInvoice.getClientName());
-        invoiceDto.setVatRate(aInvoice.getVatRate());
-        for (LineItem lineItem : aInvoice.getLineItems()) {
-            invoiceDto.addLineItem(lineItem.getId(), lineItem.getQuantity(), lineItem.getDescription(), lineItem.getUnitPrice());
-        }
-
-        return invoiceDto;
-    }
-
-    private Invoice buildInvoiceFromAddInvoiceRequest(AddInvoiceRequest aAddInvoiceRequest) {
-        Invoice invoice = new Invoice();
-        invoice.setClientName(aAddInvoiceRequest.getClientName());
-        invoice.setInvoiceDate(aAddInvoiceRequest.getInvoiceDate());
-        invoice.setVatRate(aAddInvoiceRequest.getVatRate());
-        return invoice;
-    }
 }

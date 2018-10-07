@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
@@ -16,6 +18,9 @@ public class LineItem {
     private Long quantity;
     private String description;
     private BigDecimal unitPrice;
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
 
     public Long getId() {
         return id;

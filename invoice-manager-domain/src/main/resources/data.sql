@@ -1,1 +1,0 @@
-INSERT INTO invoice (id, client_name, vat_rate) VALUES(1, 'Fako', 14.2);
