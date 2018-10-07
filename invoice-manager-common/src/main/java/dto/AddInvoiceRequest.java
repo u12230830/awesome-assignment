@@ -3,8 +3,9 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AddInvoiceRequest {
     private String clientName;
@@ -12,6 +13,11 @@ public class AddInvoiceRequest {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date InvoiceDate;
+    private List<LineItemDto> lineItemDtos;
+
+    public AddInvoiceRequest() {
+        lineItemDtos = new ArrayList<LineItemDto>();
+    }
 
     public String getClientName() {
         return clientName;
@@ -35,5 +41,13 @@ public class AddInvoiceRequest {
 
     public void setInvoiceDate(Date aInvoiceDate) {
         InvoiceDate = aInvoiceDate;
+    }
+
+    public List<LineItemDto> getLineItemDtos() {
+        return lineItemDtos;
+    }
+
+    public void setLineItemDtos(List<LineItemDto> aLineItemDtos) {
+        lineItemDtos = aLineItemDtos;
     }
 }

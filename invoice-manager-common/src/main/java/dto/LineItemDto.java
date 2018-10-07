@@ -9,7 +9,12 @@ public class LineItemDto {
     private BigDecimal unitPrice;
 
     public LineItemDto(){
+    }
 
+    public LineItemDto(Long aQuantity, String aDescription, BigDecimal aUnitPrice) {
+        quantity = aQuantity;
+        description = aDescription;
+        unitPrice = aUnitPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public LineItemDto(Long aId, Long aQuantity, String aDescription, BigDecimal aUnitPrice) {

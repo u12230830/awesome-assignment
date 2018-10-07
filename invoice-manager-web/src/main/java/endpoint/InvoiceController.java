@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import repo.InvoiceRepository;
+import repo.LineItemRespository;
 
 import java.util.List;
 
@@ -21,13 +22,16 @@ public class InvoiceController {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private LineItemRespository lineItemRespository;
+
     /**
      * Returns required invoice by Id
      *
      * @param invoiceId
      * @return
      */
-    @RequestMapping("/{invoiceId}")
+    @RequestMapping(value = "/{invoiceId}", method = RequestMethod.GET)
     public InvoiceDto viewInvoice(@RequestParam(value = "invoiceId") Long invoiceId) {
         Invoice invoice = invoiceRepository.getOne(invoiceId);
         return InvoiceManagerEndpointHelper.buildInvoiceDtoFromInvoice(invoice);
@@ -53,7 +57,14 @@ public class InvoiceController {
         Invoice invoice = InvoiceManagerEndpointHelper.buildInvoiceFromAddInvoiceRequest(aAddInvoiceRequest);
         invoiceRepository.save(invoice);
         InvoiceDto invoiceDto = InvoiceManagerEndpointHelper.buildInvoiceDtoFromInvoice(invoice);
+        saveItemItems(invoice);
         return invoiceDto;
     }
 
+    private void saveItemItems(Invoice aInvoice){
+        for(LineItem lineItem : aInvoice.getLineItems()){
+            lineItem.setInvoice(aInvoice);
+            lineItemRespository.save(lineItem);
+        }
+    }
 }

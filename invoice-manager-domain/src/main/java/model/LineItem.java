@@ -22,6 +22,14 @@ public class LineItem {
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice aInvoice) {
+        invoice = aInvoice;
+    }
+
     public Long getId() {
         return id;
     }
@@ -52,5 +60,9 @@ public class LineItem {
 
     public void setUnitPrice(BigDecimal aUnitPrice) {
         unitPrice = aUnitPrice;
+    }
+
+    public BigDecimal getLineItemTotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }

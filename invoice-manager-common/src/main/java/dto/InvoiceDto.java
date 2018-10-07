@@ -14,8 +14,11 @@ public class InvoiceDto {
     private Long vatRate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private Date InvoiceDate;
+    private Date invoiceDate;
     private List<LineItemDto> lineItems;
+    private BigDecimal subTotal;
+    private BigDecimal vat;
+    private BigDecimal total;
 
     public InvoiceDto() {
         lineItems = new ArrayList<LineItemDto>();
@@ -46,11 +49,11 @@ public class InvoiceDto {
     }
 
     public Date getInvoiceDate() {
-        return InvoiceDate;
+        return invoiceDate;
     }
 
     public void setInvoiceDate(Date aInvoiceDate) {
-        InvoiceDate = aInvoiceDate;
+        invoiceDate = aInvoiceDate;
     }
 
     public List<LineItemDto> getLineItems() {
@@ -59,6 +62,30 @@ public class InvoiceDto {
 
     public void setLineItems(List<LineItemDto> aLineItems) {
         lineItems = aLineItems;
+    }
+
+    public BigDecimal getSubTotal() {
+        return subTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public void setSubTotal(BigDecimal aSubTotal) {
+        subTotal = aSubTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getVat() {
+        return vat.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public void setVat(BigDecimal aVat) {
+        vat = aVat.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getTotal() {
+        return total.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public void setTotal(BigDecimal aTotal) {
+        total = aTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public void addLineItem(Long id, Long quantity, String description, BigDecimal unitPrice) {

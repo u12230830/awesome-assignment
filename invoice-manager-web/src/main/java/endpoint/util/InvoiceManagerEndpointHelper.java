@@ -2,6 +2,7 @@ package endpoint.util;
 
 import dto.AddInvoiceRequest;
 import dto.InvoiceDto;
+import dto.LineItemDto;
 import model.Invoice;
 import model.LineItem;
 
@@ -25,6 +26,9 @@ public class InvoiceManagerEndpointHelper {
         invoiceDto.setInvoiceDate(aInvoice.getInvoiceDate());
         invoiceDto.setClientName(aInvoice.getClientName());
         invoiceDto.setVatRate(aInvoice.getVatRate());
+        invoiceDto.setVat(aInvoice.getVat());
+        invoiceDto.setSubTotal(aInvoice.getSubTotal());
+        invoiceDto.setTotal(aInvoice.getSubTotal());
 
         for (LineItem lineItem : aInvoice.getLineItems()) {
             invoiceDto.addLineItem(lineItem.getId(), lineItem.getQuantity(), lineItem.getDescription(), lineItem.getUnitPrice());
@@ -38,6 +42,21 @@ public class InvoiceManagerEndpointHelper {
         invoice.setClientName(aAddInvoiceRequest.getClientName());
         invoice.setInvoiceDate(aAddInvoiceRequest.getInvoiceDate());
         invoice.setVatRate(aAddInvoiceRequest.getVatRate());
+        invoice.setLineItems(buildLineItemsFromLineItemDtos(aAddInvoiceRequest.getLineItemDtos()));
         return invoice;
+    }
+
+    public static List<LineItem> buildLineItemsFromLineItemDtos(List<LineItemDto> aLineItemDtos) {
+        List<LineItem> lineItems = new ArrayList<>();
+
+        for(LineItemDto lineItemDto : aLineItemDtos){
+            LineItem lineItem = new LineItem();
+            lineItem.setDescription(lineItemDto.getDescription());
+            lineItem.setQuantity(lineItemDto.getQuantity());
+            lineItem.setUnitPrice(lineItemDto.getUnitPrice());
+            lineItems.add(lineItem);
+        }
+
+        return lineItems;
     }
 }

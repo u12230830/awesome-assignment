@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Invoice {
     private Long id;
     private String clientName;
     private Long vatRate;
-    private Date InvoiceDate;
+    private Date invoiceDate;
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<LineItem> lineItems;
 
@@ -47,11 +48,11 @@ public class Invoice {
     }
 
     public Date getInvoiceDate() {
-        return InvoiceDate;
+        return invoiceDate;
     }
 
     public void setInvoiceDate(Date aInvoiceDate) {
-        InvoiceDate = aInvoiceDate;
+        invoiceDate = aInvoiceDate;
     }
 
     public List<LineItem> getLineItems() {
@@ -60,5 +61,22 @@ public class Invoice {
 
     public void setLineItems(List<LineItem> aLineItems) {
         lineItems = aLineItems;
+    }
+
+    public BigDecimal getSubTotal() {
+        BigDecimal subTotal = BigDecimal.valueOf(0);
+        for (LineItem lineItem : lineItems) {
+            subTotal.add(lineItem.getLineItemTotal());
+        }
+
+        return subTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getVat() {
+        return getSubTotal().multiply(BigDecimal.valueOf(vatRate / 100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getTotal(){
+        return getSubTotal().add(getTotal()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }
