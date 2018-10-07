@@ -5,8 +5,19 @@ import java.math.BigDecimal;
 public class LineItemDto {
     private Long id;
     private Long quantity;
-    private Long description;
+    private String description;
     private BigDecimal unitPrice;
+
+    public LineItemDto(){
+
+    }
+
+    public LineItemDto(Long aId, Long aQuantity, String aDescription, BigDecimal aUnitPrice) {
+        id = aId;
+        quantity = aQuantity;
+        description = aDescription;
+        unitPrice = aUnitPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
 
     public Long getId() {
         return id;
@@ -24,11 +35,11 @@ public class LineItemDto {
         quantity = aQuantity;
     }
 
-    public Long getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Long aDescription) {
+    public void setDescription(String aDescription) {
         description = aDescription;
     }
 

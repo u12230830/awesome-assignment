@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "INVOICE")
@@ -15,8 +16,9 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String clientName;
-    private BigDecimal vatRate;
+    private Long vatRate;
     private Date InvoiceDate;
+    private List<LineItem> lineItems;
 
     public Long getId() {
         return id;
@@ -34,11 +36,11 @@ public class Invoice {
         clientName = aClientName;
     }
 
-    public BigDecimal getVatRate() {
+    public Long getVatRate() {
         return vatRate;
     }
 
-    public void setVatRate(BigDecimal aVatRate) {
+    public void setVatRate(Long aVatRate) {
         vatRate = aVatRate;
     }
 
@@ -48,5 +50,13 @@ public class Invoice {
 
     public void setInvoiceDate(Date aInvoiceDate) {
         InvoiceDate = aInvoiceDate;
+    }
+
+    public List<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public void setLineItems(List<LineItem> aLineItems) {
+        lineItems = aLineItems;
     }
 }

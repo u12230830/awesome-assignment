@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class AddInvoiceRequest {
     private String clientName;
-    private BigDecimal vatRate;
+    private Long vatRate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date InvoiceDate;
@@ -21,12 +21,12 @@ public class AddInvoiceRequest {
         clientName = aClientName;
     }
 
-    public BigDecimal getVatRate() {
-        return vatRate.setScale(2, BigDecimal.ROUND_HALF_UP);
+    public Long getVatRate() {
+        return vatRate;
     }
 
-    public void setVatRate(BigDecimal aVatRate) {
-        vatRate = aVatRate.setScale(2, BigDecimal.ROUND_HALF_UP);
+    public void setVatRate(Long aVatRate) {
+        vatRate = aVatRate;
     }
 
     public Date getInvoiceDate() {

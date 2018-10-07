@@ -3,6 +3,7 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,7 +61,7 @@ public class InvoiceDto {
         lineItems = aLineItems;
     }
 
-    public void addLineItem(LineItemDto aLineItemDto) {
-        lineItems.add(aLineItemDto);
+    public void addLineItem(Long id, Long quantity, String description, BigDecimal unitPrice) {
+        lineItems.add(new LineItemDto(id, quantity, description, unitPrice));
     }
 }
